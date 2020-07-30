@@ -21,7 +21,7 @@ class ReadIni:
 
     def get_value(self, key, section=None):
         if section is None:
-            section = 'Common'
+            section = 'api'
         else:
             section = section
         return self.data.get(section, key)
