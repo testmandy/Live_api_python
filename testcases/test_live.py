@@ -2,15 +2,23 @@
 # @Time    : 2020/7/30 19:45
 # @Author  : mandy
 import json
-
-import pytest
-
 from common.Init import TestInit
-from common.request import Request
-from util.read_ini import ReadIni
+user_id = 3552
+course_id = 180
+lesson_id = 1232
+course_period_id = 344
+class_group_id = 25595194246168576
+lesson_group_id = 25594916549689344
+class_id = 1315
 
 
 class TestLive(TestInit):
+    def get_result(cls, url, data):
+        json_data = json.dumps(data)
+        res = cls.req.main('post', url, json_data, cls.headers)
+        print(u"请求结果为：%s" % res)
+        cls.compare_msg(res)
+
     def compare_msg(cls, res):
         json_res = json.loads(res)
         if json_res["msg"] == ('success' or 'SUCCESS'):
@@ -23,93 +31,58 @@ class TestLive(TestInit):
         # 拼接请求地址
         url = cls.schoolweb_url + cls.login_uri
         data = {"username": "15200000020", "password": "nice123456"}
-        json_data = json.dumps(data)
-        res = cls.req.main('post', url, json_data, cls.headers)
-        print(u"请求结果为：%s" % res)
-        cls.compare_msg(res)
+        cls.get_result(url, data)
 
-    # @pytest.mark.skip
-    def test_queryCourseList(cls):
+    def test_qryLiveInfo(cls):
         # 拼接请求地址
-        url = cls.schoolweb_url + cls.queryCourseList_uri
-        data = {"user_id": 1}
-        json_data = json.dumps(data)
-        res = cls.req.main('post', url, json_data, cls.headers)
-        print(u"请求结果为：%s" % res)
-        cls.compare_msg(res)
+        url = cls.base_url + cls.qryLiveInfo_uri
+        data = {"nice_student_course_lesson_learn.lesson_id": lesson_id,
+                "nice_student_course_lesson_learn.course_id": course_id,
+                "nice_student_course_lesson_learn.course_period_id": course_period_id,
+                "nice_student_course_lesson_learn.user_id": user_id}
+        cls.get_result(url, data)
 
-    # @pytest.mark.skip
-    def test_queryList(cls):
+    def test_getCoin(cls):
         # 拼接请求地址
-        url = cls.schoolweb_url + cls.queryList_uri
-        data = {
-            "tutor_id": 3194,
-            "name": "学员",
-            "mobile": 13476345567,
-            "tag_id": [20, 21],
-            "tag_count": 2,
-            "currPage": 1,
-            "pageSize": 1
-        }
-        json_data = json.dumps(data)
-        res = cls.req.main('post', url, json_data, cls.headers)
-        print(u"请求结果为：%s" % res)
-        cls.compare_msg(res)
+        url = cls.base_url + cls.getCoin_uri
+        data = {"nice_user_coin_account.user_id": user_id}
+        cls.get_result(url, data)
 
-    # @pytest.mark.skip
-    def test_getSudentByName(cls):
+    def test_getSystemMsg(cls):
         # 拼接请求地址
-        url = cls.schoolweb_url + cls.getSudentByName_uri
-        data = {
-            "nice_student.tutor_id": 995,
-            "nice_student.real_name": "测试",
-            "page.currPage": 1,
-            "page.pageSize": 10
-        }
-        json_data = json.dumps(data)
-        res = cls.req.main('post', url, json_data, cls.headers)
-        print(u"请求结果为：%s" % res)
-        cls.compare_msg(res)
+        url = cls.base_url + cls.getSystemMsg_uri
+        data = {"sysCurrencyId": 114, "sysType": "classroom.ppt", "groupId": lesson_group_id}
+        cls.get_result(url, data)
 
-    def test_awardCoin(cls):
+    def test_updateRoom(cls):
         # 拼接请求地址
-        url = cls.schoolweb_url + cls.awardCoin_uri
-        data = [{
-            "tutor_id": "4839",
-            "coin": 1,
-            "users": [cls.users]
-        }]
-        json_data = json.dumps(data)
-        res = cls.req.main('post', url, json_data, cls.headers)
-        print(u"请求结果为：%s" % res)
-        cls.compare_msg(res)
+        url = cls.base_url + cls.updateRoom_uri
+        data = {"course_id": course_id, "course_period_id": course_period_id, "lesson_id": lesson_id,
+                "user_id": user_id, "groupId": class_group_id, "type": "enter"}
+        cls.get_result(url, data)
 
-    # @pytest.mark.skip
-    def test_queryStudentAnalysis(cls):
+    def test_queryIsCanSpeak(cls):
         # 拼接请求地址
-        url = cls.schoolweb_url + cls.queryStudentAnalysis_uri
-        data = {
-            "course_period_id": "1",
-            "lesson_id": "1",
-            "teacher_id": "1",
-            "class_id": "1"
-        }
-        json_data = json.dumps(data)
-        res = cls.req.main('post', url, json_data, cls.headers)
-        print(u"请求结果为：%s" % res)
-        cls.compare_msg(res)
+        url = cls.base_url + cls.queryIsCanSpeak_uri
+        data = {"nice_user_classroom_status.user_id": user_id, "nice_user_classroom_status.course_lesson_id": "1232",
+                "nice_user_classroom_status.course_period_id": "344"}
+        cls.get_result(url, data)
 
-    # @pytest.mark.skip
-    def test_queryStudentList(cls):
+    def test_getClearBeforeMsg(cls):
         # 拼接请求地址
-        url = cls.schoolweb_url + cls.queryStudentList_uri
-        data = {
-            "course_period_id": "1",
-            "lesson_id": "1",
-            "teacher_id": "1",
-            "class_id": "1"
-        }
-        json_data = json.dumps(data)
-        res = cls.req.main('post', url, json_data, cls.headers)
-        print(u"请求结果为：%s" % res)
-        cls.compare_msg(res)
+        url = cls.base_url + cls.getClearBeforeMsg_uri
+        data = {"sysType": "classroom.point", "sysCurrencyId": "1232", "groupId": "25594916549689344"}
+        cls.get_result(url, data)
+
+    def test_onlineNum(cls):
+        # 拼接请求地址
+        url = cls.base_url + cls.onlineNum_uri
+        data = {"class_id": "1315"}
+        cls.get_result(url, data)
+
+    def test_heartBeat(cls):
+        # 拼接请求地址
+        url = cls.base_url + cls.heartBeat_uri
+        data = {"course_id": course_id, "course_period_id": course_period_id, "lesson_id": lesson_id, "user_id": "3552",
+                "class_id": class_id, "group_id": class_group_id}
+        cls.get_result(url, data)
