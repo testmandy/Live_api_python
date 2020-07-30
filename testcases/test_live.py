@@ -10,6 +10,7 @@ course_period_id = 344
 class_group_id = 25595194246168576
 lesson_group_id = 25594916549689344
 class_id = 1315
+sysCurrencyId = 114
 
 
 class TestLive(TestInit):
@@ -51,7 +52,7 @@ class TestLive(TestInit):
     def test_getSystemMsg(cls):
         # 拼接请求地址
         url = cls.base_url + cls.getSystemMsg_uri
-        data = {"sysCurrencyId": 114, "sysType": "classroom.ppt", "groupId": lesson_group_id}
+        data = {"sysCurrencyId": sysCurrencyId, "sysType": "classroom.ppt", "groupId": lesson_group_id}
         cls.get_result(url, data)
 
     def test_updateRoom(cls):
@@ -64,25 +65,25 @@ class TestLive(TestInit):
     def test_queryIsCanSpeak(cls):
         # 拼接请求地址
         url = cls.base_url + cls.queryIsCanSpeak_uri
-        data = {"nice_user_classroom_status.user_id": user_id, "nice_user_classroom_status.course_lesson_id": "1232",
-                "nice_user_classroom_status.course_period_id": "344"}
+        data = {"nice_user_classroom_status.user_id": user_id, "nice_user_classroom_status.course_lesson_id": lesson_id,
+                "nice_user_classroom_status.course_period_id": course_period_id}
         cls.get_result(url, data)
 
     def test_getClearBeforeMsg(cls):
         # 拼接请求地址
         url = cls.base_url + cls.getClearBeforeMsg_uri
-        data = {"sysType": "classroom.point", "sysCurrencyId": "1232", "groupId": "25594916549689344"}
+        data = {"sysType": "classroom.point", "sysCurrencyId": sysCurrencyId, "groupId": lesson_group_id}
         cls.get_result(url, data)
 
     def test_onlineNum(cls):
         # 拼接请求地址
         url = cls.base_url + cls.onlineNum_uri
-        data = {"class_id": "1315"}
+        data = {"class_id": class_id}
         cls.get_result(url, data)
 
     def test_heartBeat(cls):
         # 拼接请求地址
         url = cls.base_url + cls.heartBeat_uri
-        data = {"course_id": course_id, "course_period_id": course_period_id, "lesson_id": lesson_id, "user_id": "3552",
+        data = {"course_id": course_id, "course_period_id": course_period_id, "lesson_id": lesson_id, "user_id": user_id,
                 "class_id": class_id, "group_id": class_group_id}
         cls.get_result(url, data)
