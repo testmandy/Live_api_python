@@ -28,15 +28,15 @@ class Request:
         return res
 
     def main(self, method, url, data=None, headers=None):
-        print(u"请求接口为：%s" % url)
-        print(u"请求头信息：%s" % headers)
-        print(u"请求body：%s" % data)
+        print(u'请求接口为：%s' % url)
+        print(u'请求头信息：%s' % headers)
+        print(u'请求body：%s' % data)
         if method == ('get' or 'GET'):
             res = self.get_method(url, data, headers)
         elif method == ('post' or 'POST'):
             res = self.post_method(url, data, headers)
         else:
-            print(u"unkown method")
+            print(u'unkown method')
             res = None
         # return json.dumps(res, ensure_ascii=False, sort_keys=True, indent=2)
         return res

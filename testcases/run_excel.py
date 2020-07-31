@@ -12,8 +12,8 @@ class RunExcel:
     def __init__(self):
         self.dt = Data()
         readIni = ReadIni()
-        self.base_url = readIni.get_value("base_url", "api")
-        self.schoolweb_url = readIni.get_value("schoolweb_url", "api")
+        self.base_url = readIni.get_value('base_url', 'api')
+        self.schoolweb_url = readIni.get_value('schoolweb_url', 'api')
         self.req = Request()
         self.row_total = self.dt.row_total()
 
@@ -47,14 +47,14 @@ class RunExcel:
         else:
             url = self.base_url + uri
         # 判断是否需要请求头
-        print(u"是否有请求头：%s" % is_header)
+        print(u'是否有请求头：%s' % is_header)
         if is_header == 'no':
             print(method + url + request_data)
             res = self.req.main(method, url, request_data)
             print(res)
         else:
-            headers = {"Content-Type": "application/json;charset=UTF-8",
-                       "token": "3552ed08e78b272a2988a1f283ac949cc054"}
+            headers = {'Content-Type': 'application/json;charset=UTF-8',
+                       'token': '3552ed08e78b272a2988a1f283ac949cc054'}
             res = self.req.main(method, url, request_data, headers)
             print(res)
             self.compare_msg(i, res)
@@ -62,17 +62,17 @@ class RunExcel:
 
     def compare_msg(self, i, res):
         json_res = json.loads(res, encoding='utf-8')
-        if json_res["msg"] == ('success' or 'SUCCESS'):
-            print(u"------------测试通过(^_^)------------")
+        if json_res['msg'] == ('success' or 'SUCCESS'):
+            print(u'------------测试通过(^_^)------------')
             self.dt.write_passed_result(i)
         else:
-            print(u"------------测试未通过/(ㄒoㄒ)/~~------------")
+            print(u'------------测试未通过/(ㄒoㄒ)/~~------------')
             self.dt.write_failed_result(i, res)
 
     def run(self):
-        print(u"行数：", self.row_total)
+        print(u'行数：', self.row_total)
         for i in range(1, self.row_total):
-            print(u"开始执行第 %d 行" % i)
+            print(u'开始执行第 %d 行' % i)
             # 如果运行
             if self.dt.get_is_run(i) == 'yes' or 'YES':
                 self.get_result(i)
